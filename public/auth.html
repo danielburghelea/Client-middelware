@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+    <meta charset="utf-8">
+    <title>Client App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+  
+	
+<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css" rel="stylesheet">
+<style> 
+body
+{
+background-image:url("http://t3.gstatic.com/images?q=tbn:ANd9GcQaXlybChhROEm2a4grAKGc80FOWYLGXJDT3EOwVRG5BQ52Lpl_5Q");
+background-size: cover;
+}
+</style>
+	
+</head>	
+
+<body>	
+
+
+
+<div class="page-header text-center">
+<div class="col-sm-6 col-sm-offset-3">
+<hr>
+<h3>Checking your credentials...</h3>
+<h4>Validating...</h4>
+<br>
+<i class="fa fa-spinner fa-spin fa-3x"></i>
+
+</div>
+</div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+
+var socket = io.connect('http://192.168.2.101:8000');
+
+window.onload = function(){
+
+	var data = document.getElementsByName("eEmail")[0].value;
+	var dataDH1 = document.getElementsByName("DH1")[0].value;
+		socket.emit('joinRoom2', data, dataDH1);
+};
+
+socket.on('DH2', function(pData, sData) {
+
+	document.body.innerHTML += '<form id="DHform" action="/DHvalidate" method="POST">'
+	+ '<input type="hidden" name="pData" value="' + pData + '">'
+	+ '<input type="hidden" name="sData" value="' + sData + '"></form>';
+	document.getElementById("DHform").submit();
+});
+	
+
+
+</script>

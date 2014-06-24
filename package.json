@@ -1,0 +1,13 @@
+{
+  "name": "node-authentication",
+  "main": "server.js",
+  "dependencies": {
+    "express": "*",
+    "pg": "*",
+    "morgan": "*",
+    "cookie-parser": "*",
+    "body-parser": "*",
+    "method-override": "*",
+    "express-session": "*"
+  }
+}
